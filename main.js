@@ -60,11 +60,10 @@ const canObserve = 'IntersectionObserver' in window;
 
 if (motionToggle) {
   motionToggle.addEventListener('click', () => {
-    const paused = document.documentElement.classList.toggle('circuit-paused');
+    const paused = document.documentElement.classList.toggle('motion-paused');
     motionToggle.setAttribute('aria-pressed', String(paused));
-    motionToggle.textContent = paused ? 'Play circuit' : 'Pause circuit';
+    motionToggle.textContent = paused ? 'Play animation' : 'Pause animation';
   });
-  motionToggle.textContent = 'Pause circuit';
 }
 
 if (canObserve) {

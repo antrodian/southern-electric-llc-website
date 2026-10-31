@@ -42,6 +42,7 @@ const valueItems = valuesFlow ? [...valuesFlow.querySelectorAll('.value-item')] 
 const valueCounter = document.querySelector('.about-progress-current');
 const servicesGrid = document.querySelector('.service-grid');
 const heroVisual = document.querySelector('.hero-visual');
+const heroSection = document.querySelector('.hero');
 const motionToggle = document.querySelector('.motion-toggle');
 const mainElement = document.querySelector('main');
 const aboutSection = document.querySelector('.about');
@@ -105,7 +106,7 @@ const clamp = (value) => Math.min(1, Math.max(0, value));
 
 const measureJourney = () => {
   const enabled = !motionPreference.matches && window.innerWidth > 800 &&
-    mainElement && heroVisual && servicesGrid && aboutSection && contactActions &&
+    mainElement && heroVisual && heroSection && servicesGrid && aboutSection && contactActions &&
     valuesFlow && journeySvg && journeyTrack && journeyLive && journeyHead;
   document.documentElement.classList.toggle('has-journey', Boolean(enabled));
   if (!enabled) {
@@ -115,6 +116,7 @@ const measureJourney = () => {
 
   const mainRect = mainElement.getBoundingClientRect();
   const heroRect = heroVisual.getBoundingClientRect();
+  const heroSectionRect = heroSection.getBoundingClientRect();
   const servicesRect = servicesGrid.getBoundingClientRect();
   const aboutRect = aboutSection.getBoundingClientRect();
   const valuesRect = valuesFlow.getBoundingClientRect();
@@ -123,7 +125,7 @@ const measureJourney = () => {
   const serviceX = servicesRect.left - mainRect.left + 1;
   const workX = Math.max(16, serviceX - 36);
   const valueX = valuesRect.left - mainRect.left;
-  journeyStartY = heroRect.bottom - mainRect.top;
+  journeyStartY = heroSectionRect.bottom - mainRect.top;
   journeyEndY = contactRect.top - mainRect.top;
   const serviceTop = servicesRect.top - mainRect.top;
   const serviceBottom = servicesRect.bottom - mainRect.top;

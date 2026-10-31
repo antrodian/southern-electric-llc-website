@@ -4,14 +4,19 @@ const menuButton = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
 
 if (menuButton && siteNav) {
-  const closeMenu = () => {
+  const menuLabel = menuButton.querySelector('.menu-label');
+  const closeMenu = (restoreFocus = false) => {
+    const wasOpen = menuButton.getAttribute('aria-expanded') === 'true';
     menuButton.setAttribute('aria-expanded', 'false');
+    if (menuLabel) menuLabel.textContent = 'Menu';
     siteNav.classList.remove('is-open');
+    if (restoreFocus && wasOpen) menuButton.focus();
   };
 
   menuButton.addEventListener('click', () => {
     const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
     menuButton.setAttribute('aria-expanded', String(!isOpen));
+    if (menuLabel) menuLabel.textContent = isOpen ? 'Menu' : 'Close';
     siteNav.classList.toggle('is-open', !isOpen);
   });
 
@@ -20,10 +25,14 @@ if (menuButton && siteNav) {
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+    if (event.key === 'Escape') closeMenu(true);
   });
 
-  window.matchMedia('(min-width: 681px)').addEventListener('change', closeMenu);
+  document.addEventListener('pointerdown', (event) => {
+    if (!event.target.closest('.site-header')) closeMenu();
+  });
+
+  window.matchMedia('(min-width: 681px)').addEventListener('change', () => closeMenu());
 }
 
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -218,11 +227,23 @@ if (inquiryForm) {
   const replyField = document.querySelector('#inquiry-reply');
   const phoneField = document.querySelector('#inquiry-phone');
   const status = document.querySelector('#inquiry-status');
+  const mobileContactBar = document.querySelector('.mobile-contact-bar');
+  const setFormFocus = (focused) => {
+    document.body.classList.toggle('is-form-focused', focused);
+    if (mobileContactBar) mobileContactBar.inert = focused;
+  };
   const updatePhoneRequirement = () => {
     phoneField.required = replyField.value === 'Phone';
   };
   replyField.addEventListener('change', updatePhoneRequirement);
   updatePhoneRequirement();
+
+  inquiryForm.addEventListener('focusin', () => setFormFocus(true));
+  inquiryForm.addEventListener('focusout', () => {
+    window.requestAnimationFrame(() => {
+      if (!inquiryForm.contains(document.activeElement)) setFormFocus(false);
+    });
+  });
 
   inquiryForm.addEventListener('submit', (event) => {
     event.preventDefault();

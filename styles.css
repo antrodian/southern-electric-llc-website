@@ -203,8 +203,8 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 
 @keyframes rise-in { from { opacity: .75; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes count-in { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes home-scene { 0% { opacity: 0; transform: translateY(calc(-50% + 24px)); } 6%, 43% { opacity: 1; transform: translateY(-50%); } 49%, 100% { opacity: 0; transform: translateY(calc(-50% - 22px)); } }
-@keyframes business-scene { 0%, 49% { opacity: 0; transform: translateY(calc(-50% + 24px)); } 55%, 92% { opacity: 1; transform: translateY(-50%); } 100% { opacity: 0; transform: translateY(calc(-50% - 22px)); } }
+@keyframes home-scene { 0%, 44% { opacity: 1; transform: translateY(-50%); } 50%, 95% { opacity: 0; transform: translateY(calc(-50% - 20px)); } 96% { opacity: 0; transform: translateY(calc(-50% + 20px)); } 100% { opacity: 1; transform: translateY(-50%); } }
+@keyframes business-scene { 0%, 44% { opacity: 0; transform: translateY(calc(-50% + 20px)); } 50%, 94% { opacity: 1; transform: translateY(-50%); } 100% { opacity: 0; transform: translateY(calc(-50% - 20px)); } }
 @keyframes stage-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .has-motion .hero-copy .eyebrow { animation: rise-in .4s .04s both ease-out; }
 .has-motion .hero-copy h1 { animation: rise-in .55s .1s both ease-out; }

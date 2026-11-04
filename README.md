@@ -16,9 +16,11 @@ Visit <http://localhost:4173>. No installation is required.
 
 - The main service categories appear in owner-requested order: commercial, residential, then industrial electrical work.
 - A secondary section covers pool, spa, and fountain electrical installations; Alternative Energy and Backup Power Integration; and RV campground electrical service installations. The power integration copy distinguishes installation work from equipment sales.
-- The hero cycles through Businesses, Homes, and Industry with clipped text reveals, a numbered indicator, and a moving red marker. Reduced-motion preferences show the first category without animation.
+- The concise hero cycles through Businesses, Homes, and Industry with staggered letter transitions and one red indicator. Motion pauses offscreen and in background tabs; reduced-motion preferences show a static category.
+- Services use simple rows and a compact specialty list. One navy company section presents the slogan and values, followed by a combined contact and inquiry section.
+- The mobile contact bar appears after the hero and hides near contact, with the menu open, or during form entry.
 - The site has responsive navigation, direct phone and email links, and a project inquiry form. The form opens a prefilled email draft; the visitor must send it from their email app.
-- “God, Country, and Craftsmanship” and the veteran-owned statement remain prominent. The text wordmark and abstract artwork remain until approved company assets arrive.
+- “God, Country, and Craftsmanship” and the veteran-owned statement remain prominent. The text wordmark remains until approved company assets arrive.
 - The owner declined to publish service-area details. The owner's private project anecdote is not used on the page.
 
 ## Deployment

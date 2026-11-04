@@ -39,6 +39,7 @@ const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const canObserve = 'IntersectionObserver' in window;
 const heroVisual = document.querySelector('.hero-visual');
 const heroSection = document.querySelector('.hero');
+const siteHeader = document.querySelector('.site-header');
 const contactSection = document.querySelector('#contact');
 const mobileContactBar = document.querySelector('.mobile-contact-bar');
 const revealElements = [...document.querySelectorAll('.reveal')];
@@ -95,7 +96,7 @@ const updateScrollEffects = () => {
     else link.removeAttribute('aria-current');
   });
   if (mobileContactBar && heroSection && contactSection) {
-    const show = window.innerWidth <= 680 && heroSection.getBoundingClientRect().bottom <= 72 &&
+    const show = window.innerWidth <= 680 && heroSection.getBoundingClientRect().bottom <= siteHeader.getBoundingClientRect().height &&
       contactSection.getBoundingClientRect().top > window.innerHeight * .8 &&
       !document.body.classList.contains('is-form-focused') &&
       menuButton?.getAttribute('aria-expanded') !== 'true';

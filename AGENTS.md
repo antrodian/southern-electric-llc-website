@@ -34,6 +34,7 @@ This file is the working brief for anyone building this website. Read it before 
 - The owner then selected a house and connected-lights hero experiment, but rejected it after review. Return to a polished text sequence with more interesting motion while keeping the main service headline steady. Do not restore a pause button.
 
 - On November 4, 2026, the owner approved a full simplification and polish pass: reduce repeated content, delay the phone contact bar until after the hero, combine company/value messaging, simplify decorative elements and specialty services, and add coordinated professional animation. This supersedes the earlier page-spanning circuit, repeated slogan banners, and large progress counters. Desktop and mobile are both required review targets.
+- The owner then said the header wordmark was still much too small. Make the name substantially larger, with stronger navy typography and a stacked phone layout that preserves room for the menu.
 
 ## Visual and UX direction
 

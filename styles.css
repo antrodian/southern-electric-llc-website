@@ -26,11 +26,11 @@ svg { display: block; }
 .skip-link:focus { top: 20px; }
 .site-header { position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid transparent; transition: border-color .3s; }
 .is-scrolled .site-header { border-color: var(--line); }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 88px; }
-.brand { display: inline-flex; align-items: center; gap: 13px; min-height: 44px; font-size: 20px; font-weight: 650; letter-spacing: -.045em; text-decoration: none; white-space: nowrap; }
-.brand::before { width: 3px; height: 30px; background: var(--accent); border-bottom: 8px solid var(--red); content: ""; flex: 0 0 auto; transition: transform .4s var(--ease); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 96px; }
+.brand { display: inline-flex; align-items: center; gap: 15px; min-height: 52px; color: var(--accent); font-size: 32px; font-weight: 650; line-height: 1.05; letter-spacing: -.05em; text-decoration: none; white-space: nowrap; }
+.brand::before { width: 4px; height: 42px; background: var(--accent); border-bottom: 11px solid var(--red); content: ""; flex: 0 0 auto; transition: transform .4s var(--ease); }
 .brand:hover::before { transform: scaleY(1.18); }
-.brand small { font-size: .67em; letter-spacing: -.01em; }
+.brand small { display: inline-block; margin-left: 3px; font-size: .43em; font-weight: 600; letter-spacing: .03em; }
 .site-nav { display: flex; align-items: center; gap: 36px; }
 .site-nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 550; text-decoration: none; color: var(--muted); position: relative; transition: color .2s; }
 .site-nav a:hover, .site-nav a[aria-current] { color: var(--accent); }
@@ -160,6 +160,7 @@ h1 .line-mask:last-child { color: var(--accent); }
 
 @media (max-width: 1100px) {
   .page-width { width: calc(100% - 64px); }
+  .brand { font-size: 28px; }
   .hero-grid { gap: 35px; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); padding-block: 64px 80px; }
   h1 { font-size: clamp(40px, 4.6vw, 54px); }
   .hero-visual { min-height: 350px; }
@@ -175,6 +176,8 @@ h1 .line-mask:last-child { color: var(--accent); }
 }
 @media (max-width: 800px) {
   .page-width { width: calc(100% - 48px); }
+  .brand { gap: 12px; font-size: 26px; }
+  .site-nav { gap: 25px; }
   .hero-grid { gap: 32px; }
   h1 { font-size: 36px; }
   .hero-lede { font-size: 16px; }
@@ -198,11 +201,12 @@ h1 .line-mask:last-child { color: var(--accent); }
   .form-submit { flex-direction: row; align-items: center; }
 }
 @media (max-width: 680px) {
-  html { scroll-padding-top: 84px; }
+  html { scroll-padding-top: 96px; }
   .page-width { width: calc(100% - 40px); }
-  .header-inner { min-height: 72px; gap: 12px; }
-  .brand { gap: 10px; font-size: clamp(15px, 4vw, 18px); }
-  .brand::before { height: 26px; width: 2px; }
+  .header-inner { min-height: 84px; gap: 12px; }
+  .brand { gap: 12px; font-size: clamp(24px, 6.4vw, 28px); }
+  .brand-name { display: grid; gap: 1px; }
+  .brand::before { height: 48px; width: 3px; border-bottom-width: 12px; }
   .menu-toggle { min-height: 44px; display: flex; align-items: center; gap: 10px; border: 0; padding: 8px 0 8px 8px; background: var(--bg); color: var(--text); font-size: 12px; }
   .menu-lines { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 20px; height: 20px; }
   .menu-lines span { height: 1px; width: 20px; background: currentColor; transition: transform .3s var(--ease); }

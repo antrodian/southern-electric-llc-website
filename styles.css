@@ -80,19 +80,22 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 .hero-visual { position: relative; min-height: 478px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); color: var(--accent); }
 .hero-visual::before { position: absolute; inset: 18px; border: 1px solid #cfdae4; content: ""; pointer-events: none; }
 .visual-label { position: absolute; top: 40px; left: 40px; z-index: 1; color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-.house-animation { position: absolute; inset: 20px; width: calc(100% - 40px); height: calc(100% - 40px); overflow: visible; }
-.house-outline, .house-foundation { stroke: var(--accent); stroke-width: 3; stroke-linecap: square; stroke-linejoin: miter; }
-.house-foundation { stroke-width: 2; }
-.window-light { fill: #f5cf88; fill-opacity: .42; }
-.window-outline { stroke: #94a9bc; stroke-width: 2; }
-.window-detail { stroke: #b9c7d3; stroke-width: 1.5; }
-.house-wire { stroke: #91a7ba; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
-.house-current { stroke: var(--red); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
-.power-source { fill: var(--red); stroke: var(--panel); stroke-width: 4; }
-.lamp-halo { fill: #f1c888; opacity: .34; }
-.lamp-fill { fill: #fff0ce; }
-.lamp-rays { stroke: #d7a95f; stroke-width: 3; stroke-linecap: round; }
-.lamp-ring { stroke: var(--accent); stroke-width: 2.5; }
+.kinetic-scenes { position: absolute; inset: 0; overflow: hidden; }
+.kinetic-scene { position: absolute; top: 50%; right: 38px; left: 40px; display: flex; flex-direction: column; align-items: flex-start; transform: translateY(-50%); }
+.kinetic-scene::before { position: absolute; right: -4px; bottom: 12px; color: transparent; content: attr(data-index); font-size: clamp(120px, 13vw, 180px); font-weight: 500; line-height: 1; letter-spacing: -.09em; -webkit-text-stroke: 1px #d5e0e9; pointer-events: none; }
+.kinetic-scene > * { position: relative; z-index: 1; }
+.kinetic-scene.scene-home, .kinetic-scene.scene-industry { opacity: 0; }
+.scene-number { margin-bottom: 22px; color: var(--red); font-size: 12px; font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: .08em; }
+.scene-number span { color: var(--muted); }
+.word-window { display: block; max-width: 100%; overflow: hidden; }
+.word-window strong { display: block; max-width: 100%; color: var(--accent); font-size: clamp(54px, 5vw, 75px); font-weight: 500; line-height: 1.06; letter-spacing: -.065em; white-space: nowrap; }
+.scene-business .word-window strong { font-size: clamp(39px, 3.65vw, 55px); }
+.scene-rule { display: block; width: 56px; height: 2px; margin-top: 24px; background: var(--red); }
+.scene-type { margin-top: 17px; color: var(--muted); font-size: 15px; font-weight: 550; }
+.stage-tabs { position: absolute; right: 40px; bottom: 36px; left: 40px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.stage-tabs::before { position: absolute; top: -2px; left: 0; width: 33.333%; height: 2px; background: var(--red); content: ""; }
+.stage-tabs span { min-width: 0; padding: 12px 6px 0 0; color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+.stage-tabs span + span { padding-left: 10px; border-left: 1px solid var(--line); }
 .hero-statement { position: relative; overflow: hidden; background: var(--accent); color: #fff; }
 .hero-statement::before { position: absolute; inset: 0 0 auto; height: 1px; background: rgba(255,255,255,.28); content: ""; }
 .hero-statement::after { position: absolute; top: 0; left: 0; width: 88px; height: 2px; background: var(--red-light); content: ""; }
@@ -210,22 +213,19 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 
 @keyframes rise-in { from { opacity: .75; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes count-in { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes house-flow { 0%, 8% { stroke-dashoffset: 100; opacity: 0; } 9% { opacity: 1; } 73%, 86% { stroke-dashoffset: 0; opacity: 1; } 94%, 100% { stroke-dashoffset: 0; opacity: 0; } }
-@keyframes light-one { 0%, 23% { opacity: 0; } 27%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
-@keyframes light-two { 0%, 46% { opacity: 0; } 50%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
-@keyframes light-three { 0%, 70% { opacity: 0; } 74%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes scene-first { 0%, 28% { opacity: 1; transform: translateY(-50%); clip-path: inset(0); } 34% { opacity: 0; transform: translateY(calc(-50% - 25px)); clip-path: inset(0 0 100%); } 35%, 94% { opacity: 0; transform: translateY(calc(-50% + 25px)); clip-path: inset(100% 0 0); } 100% { opacity: 1; transform: translateY(-50%); clip-path: inset(0); } }
+@keyframes scene-second { 0%, 28% { opacity: 0; transform: translateY(calc(-50% + 25px)); clip-path: inset(100% 0 0); } 34%, 61% { opacity: 1; transform: translateY(-50%); clip-path: inset(0); } 67%, 100% { opacity: 0; transform: translateY(calc(-50% - 25px)); clip-path: inset(0 0 100%); } }
+@keyframes scene-third { 0%, 61% { opacity: 0; transform: translateY(calc(-50% + 25px)); clip-path: inset(100% 0 0); } 67%, 94% { opacity: 1; transform: translateY(-50%); clip-path: inset(0); } 100% { opacity: 0; transform: translateY(calc(-50% - 25px)); clip-path: inset(0 0 100%); } }
+@keyframes tab-shift { 0%, 28% { transform: translateX(0); } 34%, 61% { transform: translateX(100%); } 67%, 94% { transform: translateX(200%); } 100% { transform: translateX(0); } }
 .has-motion .hero-copy .eyebrow { animation: rise-in .4s .04s both ease-out; }
 .has-motion .hero-copy h1 { animation: rise-in .55s .1s both ease-out; }
 .has-motion .hero-lede, .has-motion .hero-actions { animation: rise-in .5s .18s both ease-out; }
 .has-motion .hero-statement p { animation: rise-in .55s .25s both ease-out; }
-.has-motion .house-current { animation: house-flow 8.4s linear infinite; }
-.has-motion .light-one .lamp-glow { animation: light-one 8.4s ease-in-out infinite; }
-.has-motion .light-two .lamp-glow { animation: light-two 8.4s ease-in-out infinite; }
-.has-motion .light-three .lamp-glow { animation: light-three 8.4s ease-in-out infinite; }
-.has-motion .window-light.light-one { animation: light-one 8.4s ease-in-out infinite; }
-.has-motion .window-light.light-two { animation: light-two 8.4s ease-in-out infinite; }
-.has-motion .window-light.light-three { animation: light-three 8.4s ease-in-out infinite; }
-.has-motion .hero-visual:not(.is-in-view) .house-current, .has-motion .hero-visual:not(.is-in-view) .lamp-glow, .has-motion .hero-visual:not(.is-in-view) .window-light { animation-play-state: paused; }
+.has-motion .scene-business { animation: scene-first 12s infinite; }
+.has-motion .scene-home { animation: scene-second 12s infinite; }
+.has-motion .scene-industry { animation: scene-third 12s infinite; }
+.has-motion .stage-tabs::before { animation: tab-shift 12s infinite; }
+.has-motion .hero-visual:not(.is-in-view) .kinetic-scene, .has-motion .hero-visual:not(.is-in-view) .stage-tabs::before { animation-play-state: paused; }
 .has-motion .reveal:not(.service-grid) { opacity: .68; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out, background .22s ease; }
 .has-motion .reveal:not(.service-grid).is-visible { opacity: 1; transform: translateY(0); }
 .has-motion .service-item:nth-child(2) { transition-delay: .06s; }
@@ -301,7 +301,16 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
   .hero-visual { min-height: 315px; margin-inline: 10px; }
   .hero-visual::before { inset: 14px; }
   .visual-label { display: none; }
-  .house-animation { inset: 15px; width: calc(100% - 30px); height: calc(100% - 30px); transform: scale(1.14); }
+  .kinetic-scene { right: 25px; left: 27px; }
+  .kinetic-scene::before { right: 0; bottom: 6px; font-size: 112px; }
+  .scene-number { margin-bottom: 14px; }
+  .word-window strong { font-size: clamp(50px, 14vw, 66px); }
+  .scene-business .word-window strong { font-size: clamp(33px, 10vw, 48px); }
+  .scene-rule { margin-top: 17px; }
+  .scene-type { margin-top: 13px; font-size: 14px; }
+  .stage-tabs { right: 27px; bottom: 26px; left: 27px; }
+  .stage-tabs span { font-size: 9px; padding-top: 10px; }
+  .stage-tabs span + span { padding-left: 6px; }
   .hero-statement-inner { gap: 17px; min-height: 112px; padding-block: 23px; }
   .statement-rule { width: 22px; }
   .hero-statement p { font-size: clamp(25px, 6.4vw, 36px); }

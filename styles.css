@@ -80,14 +80,19 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 .hero-visual { position: relative; min-height: 478px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); color: var(--accent); }
 .hero-visual::before { position: absolute; inset: 18px; border: 1px solid #cfdae4; content: ""; pointer-events: none; }
 .visual-label { position: absolute; top: 40px; left: 40px; z-index: 1; color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-.kinetic-scene { position: absolute; top: 50%; right: 35px; left: 40px; display: flex; flex-direction: column; align-items: flex-start; transform: translateY(-50%); }
-.kinetic-scene.scene-home, .kinetic-scene.scene-industrial { opacity: 0; }
-.scene-number { margin-bottom: 24px; color: var(--red); font-size: 12px; font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: .06em; }
-.kinetic-scene strong { display: block; max-width: 100%; font-size: clamp(54px, 5vw, 75px); font-weight: 500; line-height: 1.02; letter-spacing: -.065em; white-space: nowrap; }
-.kinetic-scene.scene-business strong { font-size: clamp(40px, 3.65vw, 55px); }
-.scene-type { margin-top: 26px; color: var(--muted); font-size: 15px; font-weight: 550; }
-.stage-progress { position: absolute; right: 40px; bottom: 45px; left: 40px; height: 2px; background: var(--line); }
-.stage-progress span { display: block; width: 100%; height: 100%; background: var(--red); transform: scaleX(.14); transform-origin: left; }
+.house-animation { position: absolute; inset: 20px; width: calc(100% - 40px); height: calc(100% - 40px); overflow: visible; }
+.house-outline, .house-foundation { stroke: var(--accent); stroke-width: 3; stroke-linecap: square; stroke-linejoin: miter; }
+.house-foundation { stroke-width: 2; }
+.window-light { fill: #f5cf88; fill-opacity: .42; }
+.window-outline { stroke: #94a9bc; stroke-width: 2; }
+.window-detail { stroke: #b9c7d3; stroke-width: 1.5; }
+.house-wire { stroke: #91a7ba; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.house-current { stroke: var(--red); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
+.power-source { fill: var(--red); stroke: var(--panel); stroke-width: 4; }
+.lamp-halo { fill: #f1c888; opacity: .34; }
+.lamp-fill { fill: #fff0ce; }
+.lamp-rays { stroke: #d7a95f; stroke-width: 3; stroke-linecap: round; }
+.lamp-ring { stroke: var(--accent); stroke-width: 2.5; }
 .hero-statement { position: relative; overflow: hidden; background: var(--accent); color: #fff; }
 .hero-statement::before { position: absolute; inset: 0 0 auto; height: 1px; background: rgba(255,255,255,.28); content: ""; }
 .hero-statement::after { position: absolute; top: 0; left: 0; width: 88px; height: 2px; background: var(--red-light); content: ""; }
@@ -205,19 +210,22 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 
 @keyframes rise-in { from { opacity: .75; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes count-in { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes business-scene { 0%, 28% { opacity: 1; transform: translateY(-50%); } 34%, 95% { opacity: 0; transform: translateY(calc(-50% - 20px)); } 96% { opacity: 0; transform: translateY(calc(-50% + 20px)); } 100% { opacity: 1; transform: translateY(-50%); } }
-@keyframes home-scene { 0%, 28% { opacity: 0; transform: translateY(calc(-50% + 20px)); } 34%, 61% { opacity: 1; transform: translateY(-50%); } 67%, 100% { opacity: 0; transform: translateY(calc(-50% - 20px)); } }
-@keyframes industrial-scene { 0%, 61% { opacity: 0; transform: translateY(calc(-50% + 20px)); } 67%, 94% { opacity: 1; transform: translateY(-50%); } 100% { opacity: 0; transform: translateY(calc(-50% - 20px)); } }
-@keyframes stage-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes house-flow { 0%, 8% { stroke-dashoffset: 100; opacity: 0; } 9% { opacity: 1; } 73%, 86% { stroke-dashoffset: 0; opacity: 1; } 94%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes light-one { 0%, 23% { opacity: 0; } 27%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes light-two { 0%, 46% { opacity: 0; } 50%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes light-three { 0%, 70% { opacity: 0; } 74%, 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
 .has-motion .hero-copy .eyebrow { animation: rise-in .4s .04s both ease-out; }
 .has-motion .hero-copy h1 { animation: rise-in .55s .1s both ease-out; }
 .has-motion .hero-lede, .has-motion .hero-actions { animation: rise-in .5s .18s both ease-out; }
 .has-motion .hero-statement p { animation: rise-in .55s .25s both ease-out; }
-.has-motion .scene-business { animation: business-scene 12s infinite; }
-.has-motion .scene-home { animation: home-scene 12s infinite; }
-.has-motion .scene-industrial { animation: industrial-scene 12s infinite; }
-.has-motion .stage-progress span { animation: stage-fill 12s linear infinite; }
-.has-motion .hero-visual:not(.is-in-view) .kinetic-scene, .has-motion .hero-visual:not(.is-in-view) .stage-progress span { animation-play-state: paused; }
+.has-motion .house-current { animation: house-flow 8.4s linear infinite; }
+.has-motion .light-one .lamp-glow { animation: light-one 8.4s ease-in-out infinite; }
+.has-motion .light-two .lamp-glow { animation: light-two 8.4s ease-in-out infinite; }
+.has-motion .light-three .lamp-glow { animation: light-three 8.4s ease-in-out infinite; }
+.has-motion .window-light.light-one { animation: light-one 8.4s ease-in-out infinite; }
+.has-motion .window-light.light-two { animation: light-two 8.4s ease-in-out infinite; }
+.has-motion .window-light.light-three { animation: light-three 8.4s ease-in-out infinite; }
+.has-motion .hero-visual:not(.is-in-view) .house-current, .has-motion .hero-visual:not(.is-in-view) .lamp-glow, .has-motion .hero-visual:not(.is-in-view) .window-light { animation-play-state: paused; }
 .has-motion .reveal:not(.service-grid) { opacity: .68; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out, background .22s ease; }
 .has-motion .reveal:not(.service-grid).is-visible { opacity: 1; transform: translateY(0); }
 .has-motion .service-item:nth-child(2) { transition-delay: .06s; }
@@ -243,7 +251,6 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
   .hero-grid { grid-template-columns: 1fr; gap: 12px; min-height: 0; padding-block: 48px; }
   .hero-copy { min-height: 0; padding: 25px 24px 38px; }
   .hero-visual { min-height: 370px; }
-  .kinetic-scene { top: 45%; }
   .hero-baseline { grid-template-columns: 1fr 1fr; }
   .hero-baseline span:last-child { grid-column: 1 / -1; border-top: 1px solid var(--line); border-left: 0; }
   .section-intro { grid-template-columns: 1fr; gap: 15px; }
@@ -294,12 +301,7 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
   .hero-visual { min-height: 315px; margin-inline: 10px; }
   .hero-visual::before { inset: 14px; }
   .visual-label { display: none; }
-  .kinetic-scene { top: 43%; right: 24px; left: 28px; }
-  .scene-number { margin-bottom: 16px; }
-  .kinetic-scene strong { font-size: clamp(54px, 14vw, 70px); }
-  .kinetic-scene.scene-business strong { font-size: clamp(35px, 10vw, 48px); }
-  .scene-type { margin-top: 17px; font-size: 14px; }
-  .stage-progress { right: 28px; bottom: 34px; left: 28px; }
+  .house-animation { inset: 15px; width: calc(100% - 30px); height: calc(100% - 30px); transform: scale(1.14); }
   .hero-statement-inner { gap: 17px; min-height: 112px; padding-block: 23px; }
   .statement-rule { width: 22px; }
   .hero-statement p { font-size: clamp(25px, 6.4vw, 36px); }

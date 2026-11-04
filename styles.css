@@ -36,7 +36,7 @@ svg { display: block; }
 .site-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--line); background: var(--bg); }
 .scroll-progress { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--red); transform: scaleX(var(--page-progress, 0)); transform-origin: left; pointer-events: none; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 84px; }
-.brand { display: inline-flex; align-items: center; gap: 13px; min-height: 44px; color: var(--text); font-size: 17px; font-weight: 650; letter-spacing: -.045em; line-height: 1.1; text-decoration: none; white-space: nowrap; transition: color .22s ease; }
+.brand { display: inline-flex; align-items: center; gap: 13px; min-height: 44px; color: var(--text); font-size: 19px; font-weight: 650; letter-spacing: -.045em; line-height: 1.1; text-decoration: none; white-space: nowrap; transition: color .22s ease; }
 .brand::before { width: 2px; height: 26px; border-bottom: 8px solid var(--red); background: var(--accent); content: ""; flex: 0 0 auto; transition: transform .25s ease; }
 .brand:hover, .brand:focus-visible { color: var(--accent); }
 .brand:hover::before, .brand:focus-visible::before { transform: scaleY(1.2); }
@@ -86,14 +86,8 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 .kinetic-scene strong { display: block; max-width: 100%; font-size: clamp(54px, 5vw, 75px); font-weight: 500; line-height: 1.02; letter-spacing: -.065em; white-space: nowrap; }
 .kinetic-scene.scene-business strong { font-size: clamp(40px, 3.65vw, 55px); }
 .scene-type { margin-top: 26px; color: var(--muted); font-size: 15px; font-weight: 550; }
-.stage-progress { position: absolute; right: 40px; bottom: 110px; left: 40px; height: 2px; background: var(--line); }
+.stage-progress { position: absolute; right: 40px; bottom: 45px; left: 40px; height: 2px; background: var(--line); }
 .stage-progress span { display: block; width: 100%; height: 100%; background: var(--red); transform: scaleX(.14); transform-origin: left; }
-.motion-toggle { position: absolute; right: 34px; bottom: 34px; z-index: 4; display: none; min-height: 44px; padding: 8px 13px; border: 1px solid var(--accent); background: var(--bg); color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; transition: background .2s ease, color .2s ease, transform .2s ease; }
-.has-js .motion-toggle { display: inline-flex; align-items: center; }
-.motion-toggle:hover, .motion-toggle:focus-visible { background: var(--accent); color: #fff; transform: translateY(-2px); }
-.motion-toggle:focus-visible { outline-color: var(--accent); }
-.motion-toggle:active { transform: translateY(1px); }
-.motion-paused .kinetic-scene, .motion-paused .stage-progress span { animation-play-state: paused !important; }
 .hero-statement { position: relative; overflow: hidden; background: var(--accent); color: #fff; }
 .hero-statement::before { position: absolute; inset: 0 0 auto; height: 1px; background: rgba(255,255,255,.28); content: ""; }
 .hero-statement::after { position: absolute; top: 0; left: 0; width: 88px; height: 2px; background: var(--red-light); content: ""; }
@@ -270,7 +264,7 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
 @media (max-width: 680px) {
   .page-width { width: min(calc(100% - 36px), var(--page-width)); }
   .header-inner { min-height: 64px; gap: 12px; }
-  .brand { min-height: 48px; gap: 10px; font-size: clamp(13px, 3.5vw, 16px); }
+  .brand { min-height: 48px; gap: 10px; font-size: clamp(14px, 3.8vw, 17px); }
   .brand::before { height: 25px; }
   .menu-toggle { min-width: 84px; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 9px; padding: 8px 11px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer; transition: background .2s ease, border-color .2s ease, color .2s ease; }
   .menu-toggle[aria-expanded="true"], .menu-toggle:active { border-color: var(--accent); background: var(--accent); color: #fff; }
@@ -305,8 +299,7 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
   .kinetic-scene strong { font-size: clamp(54px, 14vw, 70px); }
   .kinetic-scene.scene-business strong { font-size: clamp(35px, 10vw, 48px); }
   .scene-type { margin-top: 17px; font-size: 14px; }
-  .stage-progress { right: 28px; bottom: 83px; left: 28px; }
-  .motion-toggle { right: 23px; bottom: 23px; min-height: 48px; padding-inline: 12px; }
+  .stage-progress { right: 28px; bottom: 34px; left: 28px; }
   .hero-statement-inner { gap: 17px; min-height: 112px; padding-block: 23px; }
   .statement-rule { width: 22px; }
   .hero-statement p { font-size: clamp(25px, 6.4vw, 36px); }
@@ -380,7 +373,7 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
   .mobile-contact-bar a { gap: 6px; padding-inline: 6px; font-size: 12px; }
 }
 @media (hover: none) {
-  .button-primary:hover, .site-nav .nav-contact:hover, .motion-toggle:hover { transform: none; }
+  .button-primary:hover, .site-nav .nav-contact:hover { transform: none; }
   .button-primary:hover::before { transform: translateX(-101%); }
   .contact-method:hover, .service-item:hover, .specialty-item:hover { background: transparent; color: inherit; }
   .contact-method:active { background: var(--panel-2); }
@@ -394,6 +387,5 @@ h1 { max-width: 14ch; margin-bottom: 26px; font-size: clamp(58px, 5.7vw, 84px); 
   .about-progress { display: none; }
   .values-rail-fill { transform: scaleY(1); }
   .service-grid::after { transform: scaleY(1); }
-  .motion-toggle, .has-js .motion-toggle { display: none; }
   .journey-trace { display: none; }
 }

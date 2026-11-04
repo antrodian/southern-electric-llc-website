@@ -43,7 +43,6 @@ const valueCounter = document.querySelector('.about-progress-current');
 const servicesGrid = document.querySelector('.service-grid');
 const heroVisual = document.querySelector('.hero-visual');
 const heroSection = document.querySelector('.hero');
-const motionToggle = document.querySelector('.motion-toggle');
 const mainElement = document.querySelector('main');
 const aboutSection = document.querySelector('.about');
 const contactActions = document.querySelector('.contact-actions');
@@ -57,14 +56,6 @@ const sectionTargets = sectionLinks.map((link) => ({
   section: document.querySelector(link.getAttribute('href')),
 })).filter(({ section }) => section);
 const canObserve = 'IntersectionObserver' in window;
-
-if (motionToggle) {
-  motionToggle.addEventListener('click', () => {
-    const paused = document.documentElement.classList.toggle('motion-paused');
-    motionToggle.setAttribute('aria-pressed', String(paused));
-    motionToggle.textContent = paused ? 'Play animation' : 'Pause animation';
-  });
-}
 
 if (canObserve) {
   if (heroVisual) {

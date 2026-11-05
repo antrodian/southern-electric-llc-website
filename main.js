@@ -2,6 +2,7 @@ document.documentElement.classList.add('has-js');
 
 const menuButton = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
+const compactLayout = window.matchMedia('(max-width: 680px), (max-width: 960px) and (max-height: 500px)');
 
 if (menuButton && siteNav) {
   const menuLabel = menuButton.querySelector('.menu-label');
@@ -32,7 +33,7 @@ if (menuButton && siteNav) {
     if (!event.target.closest('.site-header')) closeMenu();
   });
 
-  window.matchMedia('(min-width: 681px)').addEventListener('change', () => closeMenu());
+  compactLayout.addEventListener('change', () => closeMenu());
 }
 
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -93,7 +94,8 @@ let scrollFrame = 0;
 const updateScrollEffects = () => {
   scrollFrame = 0;
   const viewportHeight = window.innerHeight;
-  const isPhone = window.innerWidth <= 680;
+  const isPhone = compactLayout.matches;
+  const hasRoomForContactBar = (window.visualViewport?.height || viewportHeight) >= 480;
   // Measure stable, untransformed containers before writing any styles.
   const heroRect = heroSection?.getBoundingClientRect();
   const contactRect = contactSection?.getBoundingClientRect();
@@ -107,7 +109,9 @@ const updateScrollEffects = () => {
   const revealUpdates = animateScroll ? revealStates.filter((state) => state.progress < 1).map((state) => {
     const delay = !isPhone && state.column > 0 ? state.column * .045 : 0;
     const top = state.element.getBoundingClientRect().top;
-    const progress = clampProgress((viewportHeight * (.92 - delay) - top) / (viewportHeight * .28));
+    const start = isPhone ? 1.02 : .92;
+    const distance = isPhone ? .24 : .28;
+    const progress = clampProgress((viewportHeight * (start - delay) - top) / (viewportHeight * distance));
     return { state, progress: Math.max(state.progress, progress) };
   }) : [];
 
@@ -117,7 +121,7 @@ const updateScrollEffects = () => {
     else link.removeAttribute('aria-current');
   });
   if (mobileContactBar && heroRect && contactRect) {
-    const show = isPhone && heroRect.bottom <= headerHeight &&
+    const show = isPhone && hasRoomForContactBar && heroRect.bottom <= headerHeight &&
       contactRect.top > viewportHeight * .8 &&
       !document.body.classList.contains('is-form-focused') &&
       menuButton?.getAttribute('aria-expanded') !== 'true';
@@ -142,6 +146,7 @@ const requestScrollUpdate = () => {
 };
 window.addEventListener('scroll', requestScrollUpdate, { passive: true });
 window.addEventListener('resize', requestScrollUpdate);
+window.visualViewport?.addEventListener('resize', requestScrollUpdate);
 window.addEventListener('pageshow', requestScrollUpdate);
 window.addEventListener('load', requestScrollUpdate);
 motionPreference.addEventListener('change', () => {
@@ -180,6 +185,7 @@ const inquiryForm = document.querySelector('#project-inquiry');
 if (inquiryForm) {
   const replyField = document.querySelector('#inquiry-reply');
   const phoneField = document.querySelector('#inquiry-phone');
+  const phoneNote = document.querySelector('#inquiry-phone-note');
   const status = document.querySelector('#inquiry-status');
   const setFormFocus = (focused) => {
     document.body.classList.toggle('is-form-focused', focused);
@@ -187,6 +193,7 @@ if (inquiryForm) {
   };
   const updatePhoneRequirement = () => {
     phoneField.required = replyField.value === 'Phone';
+    if (phoneNote) phoneNote.textContent = phoneField.required ? '(required)' : '(optional)';
   };
   replyField.addEventListener('change', updatePhoneRequirement);
   updatePhoneRequirement();

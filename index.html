@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="Southern Electric LLC provides commercial, residential, and industrial electrical work, plus specialty electrical installations and power integration." />
     <meta name="theme-color" content="#ffffff" />
     <title>Southern Electric LLC | Commercial, Residential &amp; Industrial Electrical Work</title>
     <link rel="icon" href="favicon.svg?v=20261031-tricolor" type="image/svg+xml" />
-    <link rel="stylesheet" href="styles.css?v=20261104-scroll" />
-    <script src="main.js?v=20261104-scroll" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261104-mobile" />
+    <script src="main.js?v=20261104-mobile" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -106,14 +106,14 @@
             <p class="inquiry-explainer">Tell us what you have in mind. This prepares an email draft for you to review and send from your email app.</p>
           <form class="inquiry-form" id="project-inquiry" aria-labelledby="inquiry-title">
             <div class="form-row">
-              <div class="form-field"><label for="inquiry-name">Your name</label><input id="inquiry-name" name="name" type="text" autocomplete="name" maxlength="100" required /></div>
-              <div class="form-field"><label for="inquiry-email">Your email</label><input id="inquiry-email" name="email" type="email" autocomplete="email" maxlength="254" required /></div>
+              <div class="form-field"><label for="inquiry-name">Your name</label><input id="inquiry-name" name="name" type="text" autocomplete="name" enterkeyhint="next" maxlength="100" required /></div>
+              <div class="form-field"><label for="inquiry-email">Your email</label><input id="inquiry-email" name="email" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" maxlength="254" required /></div>
             </div>
             <div class="form-row">
               <div class="form-field"><label for="inquiry-type">Project type</label><select id="inquiry-type" name="projectType" required><option value="">Choose one</option><option>Commercial electrical</option><option>Residential electrical</option><option>Industrial electrical</option><option>Pool, spa, or fountain electrical</option><option>Alternative energy or backup power integration</option><option>RV campground electrical service</option><option>Not sure yet</option></select></div>
               <div class="form-field"><label for="inquiry-reply">Preferred reply</label><select id="inquiry-reply" name="replyBy"><option>Email</option><option>Phone</option></select></div>
             </div>
-            <div class="form-field"><label for="inquiry-phone">Your phone <span>(optional unless you prefer a call)</span></label><input id="inquiry-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" /></div>
+            <div class="form-field"><label for="inquiry-phone">Your phone <span id="inquiry-phone-note">(optional)</span></label><input id="inquiry-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" maxlength="40" /></div>
             <div class="form-field"><label for="inquiry-message">Tell us about the work</label><textarea id="inquiry-message" name="message" rows="4" maxlength="1200" required></textarea></div>
             <div class="form-submit"><button class="button button-primary" type="submit"><span>Open email draft</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" /></svg></button><p id="inquiry-status" role="status" aria-live="polite">Your email app will open with the details filled in.</p></div>
           </form>

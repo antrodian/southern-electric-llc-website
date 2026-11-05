@@ -23,10 +23,15 @@ if (menuButton && siteNav) {
       return;
     }
     siteNav.classList.add('is-open');
-    const animation = siteNav.animate([from, {
-      opacity: open ? 1 : 0,
-      transform: open ? 'translateY(0)' : 'translateY(-6px)',
-    }], { duration: open ? 280 : 180, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' });
+    const frames = open ? [
+      { ...from, offset: 0, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+      { opacity: 1, transform: 'translateY(3px)', offset: .65, easing: 'ease-in-out' },
+      { opacity: 1, transform: 'translateY(-.5px)', offset: .84, easing: 'ease-out' },
+      { opacity: 1, transform: 'translateY(0)', offset: 1 },
+    ] : [from, { opacity: 0, transform: 'translateY(-6px)' }];
+    const animation = siteNav.animate(frames, {
+      duration: open ? 400 : 180, easing: open ? 'linear' : 'cubic-bezier(.4, 0, 1, 1)', fill: 'both',
+    });
     menuAnimation = animation;
     animation.onfinish = () => {
       if (menuAnimation !== animation) return;
@@ -198,14 +203,17 @@ const disclosureControllers = new Map();
 document.querySelectorAll('details').forEach((disclosure) => {
   const summary = disclosure.querySelector('summary');
   const content = disclosure.querySelector('.disclosure-content');
+  const icon = summary?.querySelector('.disclosure-icon');
   if (!summary || !content) return;
   let expanded = disclosure.open;
   let heightAnimation = null;
   let contentAnimation = null;
+  let iconAnimation = null;
   const cancelAnimations = () => {
     heightAnimation?.cancel();
     contentAnimation?.cancel();
-    heightAnimation = contentAnimation = null;
+    iconAnimation?.cancel();
+    heightAnimation = contentAnimation = iconAnimation = null;
   };
   const syncState = () => {
     summary.setAttribute('aria-expanded', String(expanded));
@@ -222,7 +230,8 @@ document.querySelectorAll('details').forEach((disclosure) => {
     if (open === expanded) return;
     const fromHeight = disclosure.getBoundingClientRect().height;
     const current = window.getComputedStyle(content);
-    const fromContent = disclosure.open ? { opacity: current.opacity, transform: current.transform } : { opacity: 0, transform: 'translateY(-6px)' };
+    const fromContent = disclosure.open ? { opacity: current.opacity, transform: current.transform } : { opacity: 0, transform: 'translateY(-8px)' };
+    const fromIcon = icon ? window.getComputedStyle(icon).transform : 'none';
     expanded = open;
     if (!open && content.contains(document.activeElement)) summary.focus({ preventScroll: true });
     syncState();
@@ -238,12 +247,32 @@ document.querySelectorAll('details').forEach((disclosure) => {
     const borders = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
     const toHeight = open ? disclosure.getBoundingClientRect().height : summary.getBoundingClientRect().height + borders;
     disclosure.classList.add('is-expanding');
-    const options = { duration: open ? 320 : 220, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
-    const animation = disclosure.animate([{ height: `${fromHeight}px` }, { height: `${toHeight}px` }], options);
+    // Bound the spring in pixels so a tall form has the same restraint as a short answer.
+    const overshoot = Math.min(compactLayout.matches ? 7 : 10, Math.max(0, toHeight - fromHeight) * .1);
+    const options = { duration: open ? 440 : 240, easing: open ? 'linear' : 'cubic-bezier(.4, 0, .6, 1)', fill: 'both' };
+    const frames = open ? [
+      { height: `${fromHeight}px`, offset: 0, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+      { height: `${toHeight + overshoot}px`, offset: .62, easing: 'ease-in-out' },
+      { height: `${toHeight - overshoot * .18}px`, offset: .82, easing: 'ease-out' },
+      { height: `${toHeight}px`, offset: 1 },
+    ] : [{ height: `${fromHeight}px` }, { height: `${toHeight}px` }];
+    const animation = disclosure.animate(frames, options);
     heightAnimation = animation;
-    contentAnimation = content.animate([fromContent, {
-      opacity: open ? 1 : 0, transform: open ? 'translateY(0)' : 'translateY(-4px)',
-    }], { ...options, duration: open ? 260 : 160 });
+    contentAnimation = content.animate(open ? [
+      { ...fromContent, offset: 0, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+      { opacity: 1, transform: 'translateY(1px)', offset: .62, easing: 'ease-in-out' },
+      { opacity: 1, transform: 'translateY(-.2px)', offset: .82, easing: 'ease-out' },
+      { opacity: 1, transform: 'translateY(0)', offset: 1 },
+    ] : [fromContent, { opacity: 0, transform: 'translateY(-4px)' }], {
+      ...options, duration: open ? 440 : 160,
+    });
+    if (icon) iconAnimation = icon.animate([
+      { transform: fromIcon, offset: 0, easing: 'ease-out' },
+      { transform: 'scale(.86)', offset: .16, easing: 'cubic-bezier(.22, 1, .36, 1)' },
+      { transform: 'scale(1.12)', offset: .52, easing: 'ease-in-out' },
+      { transform: 'scale(.99)', offset: .78, easing: 'ease-out' },
+      { transform: 'scale(1)', offset: 1 },
+    ], { duration: open ? 400 : 240, easing: 'linear', fill: 'both' });
     animation.onfinish = () => {
       if (heightAnimation === animation) settle();
     };

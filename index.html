@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#ffffff" />
     <title>Southern Electric LLC | Commercial, Residential &amp; Industrial Electrical Work</title>
     <link rel="icon" href="favicon.svg?v=20261031-tricolor" type="image/svg+xml" />
-    <link rel="stylesheet" href="styles.css?v=20261104-wordmark" />
-    <script src="main.js?v=20261104-wordmark" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261104-scroll" />
+    <script src="main.js?v=20261104-scroll" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -32,24 +32,26 @@
 
     <main id="main">
       <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="page-width hero-grid">
-          <div class="hero-copy">
+        <div class="page-width hero-content">
             <p class="eyebrow">Veteran-owned &amp; operated</p>
-            <h1 id="hero-title"><span class="line-mask"><span>Electrical work.</span></span><span class="line-mask"><span>Built on precision.</span></span></h1>
+            <h1 id="hero-title">
+              <span class="sr-only">Electrical work for businesses, homes, and industry.</span>
+              <span class="line-mask" aria-hidden="true"><span>Electrical work.</span></span>
+              <span class="hero-visual" aria-hidden="true">
+                <span>For</span>
+                <span class="kinetic-scenes">
+                  <span class="kinetic-scene scene-business"><span class="word-window"><strong data-split>businesses.</strong></span></span>
+                  <span class="kinetic-scene scene-home"><span class="word-window"><strong data-split>homes.</strong></span></span>
+                  <span class="kinetic-scene scene-industry"><span class="word-window"><strong data-split>industry.</strong></span></span>
+                </span>
+              </span>
+            </h1>
+          <div class="hero-bottom">
             <p class="hero-lede">Commercial, residential, and industrial electrical services.</p>
             <div class="hero-actions">
               <a class="button button-primary" href="tel:+16152788256"><span>Call (615) 278-8256</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" /></svg></a>
               <a class="text-link" href="#services">Explore services <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v13m-5-5 5 5 5-5" /></svg></a>
             </div>
-          </div>
-          <div class="hero-visual" aria-hidden="true">
-            <span class="visual-label">Electrical work for</span>
-            <div class="kinetic-scenes">
-              <div class="kinetic-scene scene-business"><span class="word-window"><strong data-split>Businesses.</strong></span><span class="scene-type">Commercial</span></div>
-              <div class="kinetic-scene scene-home"><span class="word-window"><strong data-split>Homes.</strong></span><span class="scene-type">Residential</span></div>
-              <div class="kinetic-scene scene-industry"><span class="word-window"><strong data-split>Industry.</strong></span><span class="scene-type">Industrial</span></div>
-            </div>
-            <span class="stage-track"><span></span></span>
           </div>
         </div>
       </section>
@@ -57,20 +59,19 @@
       <section class="section services" id="services" aria-labelledby="services-title">
         <div class="page-width">
           <div class="section-intro reveal">
-            <p class="eyebrow">Our services</p>
-            <h2 id="services-title">The work we do.</h2>
+            <h2 id="services-title">Electrical services.</h2>
           </div>
           <div class="service-grid">
-            <article class="service-item reveal"><span class="item-number" aria-hidden="true">01</span><h3>Commercial</h3><p>Electrical work for businesses and commercial projects.</p></article>
-            <article class="service-item reveal"><span class="item-number" aria-hidden="true">02</span><h3>Residential</h3><p>Electrical work for homes, including wiring for new construction.</p></article>
-            <article class="service-item reveal"><span class="item-number" aria-hidden="true">03</span><h3>Industrial</h3><p>Electrical work for industrial facilities.</p></article>
+            <article class="service-item reveal"><h3>Commercial</h3><p>Electrical work for businesses and commercial projects.</p></article>
+            <article class="service-item reveal"><h3>Residential</h3><p>Electrical work for homes, including wiring for new construction.</p></article>
+            <article class="service-item reveal"><h3>Industrial</h3><p>Electrical work for industrial facilities.</p></article>
           </div>
           <div class="specialty" aria-labelledby="specialty-title">
-            <div class="specialty-intro reveal"><h3 id="specialty-title">Specialty services</h3><p>For specific systems and installations.</p></div>
+            <div class="specialty-intro reveal"><h3 id="specialty-title">Specialty services</h3></div>
             <div class="specialty-list">
-              <article class="specialty-item reveal"><h4>Pool, spa &amp; fountain systems</h4><p>Electrical system installations for pools, spas, and fountains.</p></article>
-              <article class="specialty-item reveal"><h4>Alternative Energy and Backup Power Integration</h4><p>Integration of generators, solar, and power cells into the main power supply. We provide installation labor and materials and coordinate required permits and inspections. We do not sell the systems.</p></article>
-              <article class="specialty-item reveal"><h4>RV campground electrical service</h4><p>Electrical service installations for RV campgrounds.</p></article>
+              <details class="specialty-item reveal"><summary><h4>Pool, spa &amp; fountain systems</h4><span class="disclosure-icon" aria-hidden="true"></span></summary><p>Electrical system installations for pools, spas, and fountains.</p></details>
+              <details class="specialty-item reveal"><summary><h4>Alternative Energy and Backup Power Integration</h4><span class="disclosure-icon" aria-hidden="true"></span></summary><p>Integration of generators, solar, and power cells into the main power supply. We provide installation labor and materials and coordinate required permits and inspections. We do not sell the systems.</p></details>
+              <details class="specialty-item reveal"><summary><h4>RV campground electrical service</h4><span class="disclosure-icon" aria-hidden="true"></span></summary><p>Electrical service installations for RV campgrounds.</p></details>
             </div>
           </div>
         </div>
@@ -79,14 +80,12 @@
       <section class="section about" id="about" aria-labelledby="about-title">
         <div class="page-width about-layout">
           <div class="about-story reveal">
-            <p class="eyebrow">Southern Electric LLC</p>
+            <p class="eyebrow">Our approach</p>
             <h2 id="about-title"><span class="line-mask"><span>God, Country,</span></span><span class="line-mask"><span>and Craftsmanship.</span></span></h2>
-            <p>Veteran-owned and operated. Guided by discipline and a respect for the work.</p>
           </div>
-          <div class="values-list">
-            <article class="value-item reveal"><h3>Integrity</h3><p>Following through on commitments and treating job sites with respect.</p></article>
-            <article class="value-item reveal"><h3>Precision</h3><p>Attention to detail in electrical installations and future serviceability.</p></article>
-            <article class="value-item reveal"><h3>Safety</h3><p>A serious approach to working with electrical power.</p></article>
+          <div class="about-copy reveal">
+            <p class="about-lede">Veteran-owned and operated.<br>Guided by respect for the work.</p>
+            <p>Integrity means following through on commitments and treating job sites with respect. Precision means attention to detail in electrical installations and future serviceability. Safety guides our approach to working with electrical power.</p>
           </div>
         </div>
       </section>
@@ -94,17 +93,18 @@
       <section class="section contact" id="contact" aria-labelledby="contact-title">
         <div class="page-width contact-layout">
           <div class="contact-copy reveal">
-            <p class="eyebrow">Get in touch</p>
-            <h2 id="contact-title">Let’s talk<br>about your project.</h2>
+            <h2 id="contact-title">Let’s talk about<br>your project.</h2>
             <p class="contact-intro">Call us directly or start with a project inquiry.</p>
-            <div class="contact-actions">
+          </div>
+            <div class="contact-actions reveal">
               <a class="contact-method" href="tel:+16152788256"><span>Call</span><strong>(615) 278-8256</strong><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" /></svg></a>
               <a class="contact-method" href="mailto:tylan.southernelectricllc@gmail.com"><span>Email</span><strong>tylan.southernelectricllc<wbr>@gmail.com</strong><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" /></svg></a>
             </div>
-          </div>
-          <div class="inquiry-panel" id="inquiry">
-            <div class="inquiry-copy reveal"><h3 id="inquiry-title">Tell us what you have in mind.</h3><p>This prepares an email draft. Review and send it from your email app.</p></div>
-          <form class="inquiry-form reveal" id="project-inquiry" aria-labelledby="inquiry-title">
+          <details class="inquiry-panel" id="inquiry">
+            <summary><h3 id="inquiry-title">Start a project inquiry</h3><span class="disclosure-icon" aria-hidden="true"></span></summary>
+            <div class="inquiry-content">
+            <p class="inquiry-explainer">Tell us what you have in mind. This prepares an email draft for you to review and send from your email app.</p>
+          <form class="inquiry-form" id="project-inquiry" aria-labelledby="inquiry-title">
             <div class="form-row">
               <div class="form-field"><label for="inquiry-name">Your name</label><input id="inquiry-name" name="name" type="text" autocomplete="name" maxlength="100" required /></div>
               <div class="form-field"><label for="inquiry-email">Your email</label><input id="inquiry-email" name="email" type="email" autocomplete="email" maxlength="254" required /></div>
@@ -118,7 +118,8 @@
             <div class="form-submit"><button class="button button-primary" type="submit"><span>Open email draft</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" /></svg></button><p id="inquiry-status" role="status" aria-live="polite">Your email app will open with the details filled in.</p></div>
           </form>
             <p class="inquiry-no-js">Email <a href="mailto:tylan.southernelectricllc@gmail.com">tylan.southernelectricllc@gmail.com</a> to discuss your project.</p>
-          </div>
+            </div>
+          </details>
         </div>
       </section>
     </main>

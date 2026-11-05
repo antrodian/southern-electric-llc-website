@@ -39,10 +39,17 @@ const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const canObserve = 'IntersectionObserver' in window;
 const heroVisual = document.querySelector('.hero-visual');
 const heroSection = document.querySelector('.hero');
+const aboutSection = document.querySelector('#about');
 const siteHeader = document.querySelector('.site-header');
 const contactSection = document.querySelector('#contact');
 const mobileContactBar = document.querySelector('.mobile-contact-bar');
 const revealElements = [...document.querySelectorAll('.reveal')];
+const serviceItems = [...document.querySelectorAll('.service-item')];
+const revealStates = revealElements.map((element) => ({
+  element, progress: 0, column: serviceItems.indexOf(element),
+}));
+const clampProgress = (value) => Math.max(0, Math.min(1, value));
+const easeOut = (value) => 1 - Math.pow(1 - value, 3);
 const sectionTargets = [...document.querySelectorAll('.site-nav a[href^="#"]')].map((link) => ({
   link, section: document.querySelector(link.getAttribute('href')),
 })).filter(({ section }) => section);
@@ -60,8 +67,13 @@ document.querySelectorAll('[data-split]').forEach((word) => {
 });
 
 const setMotionState = () => {
-  document.documentElement.classList.toggle('has-motion', canObserve && !motionPreference.matches);
-  if (motionPreference.matches) revealElements.forEach((element) => element.classList.add('is-visible'));
+  const enabled = canObserve && !motionPreference.matches;
+  document.documentElement.classList.toggle('has-motion', enabled);
+  document.documentElement.classList.toggle('has-scroll-motion', enabled);
+  if (!enabled) revealStates.forEach((state) => {
+    state.progress = 1;
+    state.element.style.setProperty('--reveal', '1');
+  });
 };
 setMotionState();
 if (canObserve) {
@@ -69,39 +81,60 @@ if (canObserve) {
     heroVisual.classList.toggle('is-in-view', entry.isIntersecting);
   });
   if (heroVisual) heroObserver.observe(heroVisual);
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
-  revealElements.forEach((element) => revealObserver.observe(element));
 }
 
 document.addEventListener('visibilitychange', () => {
   document.documentElement.classList.toggle('is-document-hidden', document.hidden);
+  if (!document.hidden) requestScrollUpdate();
 });
+document.documentElement.classList.toggle('is-document-hidden', document.hidden);
 
 let scrollFrame = 0;
 const updateScrollEffects = () => {
   scrollFrame = 0;
-  document.body.classList.toggle('is-scrolled', window.scrollY > 12);
+  const viewportHeight = window.innerHeight;
+  const isPhone = window.innerWidth <= 680;
+  // Measure stable, untransformed containers before writing any styles.
+  const heroRect = heroSection?.getBoundingClientRect();
+  const contactRect = contactSection?.getBoundingClientRect();
+  const headerHeight = siteHeader?.getBoundingClientRect().height || 0;
   let activeLink = null;
   sectionTargets.forEach(({ link, section }) => {
-    if (section.getBoundingClientRect().top <= window.innerHeight * .4) activeLink = link;
+    if (section.getBoundingClientRect().top <= viewportHeight * .4) activeLink = link;
   });
+  const animateScroll = canObserve && !motionPreference.matches;
+  const aboutRect = animateScroll ? aboutSection?.getBoundingClientRect() : null;
+  const revealUpdates = animateScroll ? revealStates.filter((state) => state.progress < 1).map((state) => {
+    const delay = !isPhone && state.column > 0 ? state.column * .045 : 0;
+    const top = state.element.getBoundingClientRect().top;
+    const progress = clampProgress((viewportHeight * (.92 - delay) - top) / (viewportHeight * .28));
+    return { state, progress: Math.max(state.progress, progress) };
+  }) : [];
+
+  document.body.classList.toggle('is-scrolled', window.scrollY > 12);
   sectionTargets.forEach(({ link }) => {
     if (link === activeLink) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
-  if (mobileContactBar && heroSection && contactSection) {
-    const show = window.innerWidth <= 680 && heroSection.getBoundingClientRect().bottom <= siteHeader.getBoundingClientRect().height &&
-      contactSection.getBoundingClientRect().top > window.innerHeight * .8 &&
+  if (mobileContactBar && heroRect && contactRect) {
+    const show = isPhone && heroRect.bottom <= headerHeight &&
+      contactRect.top > viewportHeight * .8 &&
       !document.body.classList.contains('is-form-focused') &&
       menuButton?.getAttribute('aria-expanded') !== 'true';
     mobileContactBar.classList.toggle('is-visible', show);
     mobileContactBar.inert = !show;
+  }
+  if (animateScroll) {
+    if (heroRect) heroSection.style.setProperty('--hero-scroll', clampProgress(-heroRect.top / heroRect.height).toFixed(4));
+    if (aboutRect) {
+      const progress = clampProgress((viewportHeight - aboutRect.top) / (viewportHeight * .65));
+      aboutSection.style.setProperty('--section-open', easeOut(progress).toFixed(4));
+    }
+    revealUpdates.forEach(({ state, progress }) => {
+      if (progress === state.progress) return;
+      state.progress = progress;
+      state.element.style.setProperty('--reveal', easeOut(progress).toFixed(4));
+    });
   }
 };
 const requestScrollUpdate = () => {
@@ -111,11 +144,37 @@ window.addEventListener('scroll', requestScrollUpdate, { passive: true });
 window.addEventListener('resize', requestScrollUpdate);
 window.addEventListener('pageshow', requestScrollUpdate);
 window.addEventListener('load', requestScrollUpdate);
-motionPreference.addEventListener('change', setMotionState);
+motionPreference.addEventListener('change', () => {
+  setMotionState();
+  requestScrollUpdate();
+});
 menuButton?.addEventListener('click', requestScrollUpdate);
 document.addEventListener('keydown', requestScrollUpdate);
 document.addEventListener('pointerdown', requestScrollUpdate);
+document.addEventListener('focusin', (event) => {
+  const state = revealStates.find(({ element }) => element.contains(event.target));
+  if (state) {
+    state.progress = 1;
+    state.element.style.setProperty('--reveal', '1');
+  }
+});
 updateScrollEffects();
+
+// Keep inquiry links useful when the form is tucked into a disclosure.
+const inquiryPanel = document.querySelector('#inquiry');
+const openLinkedInquiry = () => {
+  if (window.location.hash === '#inquiry' && inquiryPanel) inquiryPanel.open = true;
+};
+document.querySelectorAll('a[href="#inquiry"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    if (inquiryPanel) inquiryPanel.open = true;
+  });
+});
+window.addEventListener('hashchange', openLinkedInquiry);
+document.querySelectorAll('details').forEach((disclosure) => {
+  disclosure.addEventListener('toggle', requestScrollUpdate);
+});
+openLinkedInquiry();
 
 const inquiryForm = document.querySelector('#project-inquiry');
 if (inquiryForm) {

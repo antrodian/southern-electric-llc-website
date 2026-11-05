@@ -3,22 +3,47 @@ document.documentElement.classList.add('has-js');
 const menuButton = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
 const compactLayout = window.matchMedia('(max-width: 680px), (max-width: 960px) and (max-height: 500px)');
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 if (menuButton && siteNav) {
   const menuLabel = menuButton.querySelector('.menu-label');
+  let menuAnimation = null;
+  const setMenu = (open, animate = true) => {
+    if (animate && open === (menuButton.getAttribute('aria-expanded') === 'true')) return;
+    const rendered = siteNav.classList.contains('is-open');
+    const current = rendered ? window.getComputedStyle(siteNav) : null;
+    const from = { opacity: current?.opacity || '0', transform: current?.transform || 'translateY(-8px)' };
+    menuAnimation?.cancel();
+    menuAnimation = null;
+    menuButton.setAttribute('aria-expanded', String(open));
+    if (menuLabel) menuLabel.textContent = open ? 'Close' : 'Menu';
+    siteNav.inert = compactLayout.matches && !open;
+    if (!animate || !compactLayout.matches || motionPreference.matches || !siteNav.animate || (!open && !rendered)) {
+      siteNav.classList.toggle('is-open', open);
+      return;
+    }
+    siteNav.classList.add('is-open');
+    const animation = siteNav.animate([from, {
+      opacity: open ? 1 : 0,
+      transform: open ? 'translateY(0)' : 'translateY(-6px)',
+    }], { duration: open ? 280 : 180, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' });
+    menuAnimation = animation;
+    animation.onfinish = () => {
+      if (menuAnimation !== animation) return;
+      siteNav.classList.toggle('is-open', open);
+      menuAnimation = null;
+      animation.cancel();
+    };
+  };
   const closeMenu = (restoreFocus = false) => {
     const wasOpen = menuButton.getAttribute('aria-expanded') === 'true';
-    menuButton.setAttribute('aria-expanded', 'false');
-    if (menuLabel) menuLabel.textContent = 'Menu';
-    siteNav.classList.remove('is-open');
+    setMenu(false);
     if (restoreFocus && wasOpen) menuButton.focus();
   };
 
   menuButton.addEventListener('click', () => {
     const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-    menuButton.setAttribute('aria-expanded', String(!isOpen));
-    if (menuLabel) menuLabel.textContent = isOpen ? 'Menu' : 'Close';
-    siteNav.classList.toggle('is-open', !isOpen);
+    setMenu(!isOpen);
   });
 
   siteNav.addEventListener('click', (event) => {
@@ -33,10 +58,13 @@ if (menuButton && siteNav) {
     if (!event.target.closest('.site-header')) closeMenu();
   });
 
-  compactLayout.addEventListener('change', () => closeMenu());
+  compactLayout.addEventListener('change', () => setMenu(false, false));
+  motionPreference.addEventListener('change', () => {
+    setMenu(menuButton.getAttribute('aria-expanded') === 'true', false);
+  });
+  setMenu(false, false);
 }
 
-const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const canObserve = 'IntersectionObserver' in window;
 const heroVisual = document.querySelector('.hero-visual');
 const heroSection = document.querySelector('.hero');
@@ -165,20 +193,95 @@ document.addEventListener('focusin', (event) => {
 });
 updateScrollEffects();
 
+// Keep native details semantics, while animating the space they open and close.
+const disclosureControllers = new Map();
+document.querySelectorAll('details').forEach((disclosure) => {
+  const summary = disclosure.querySelector('summary');
+  const content = disclosure.querySelector('.disclosure-content');
+  if (!summary || !content) return;
+  let expanded = disclosure.open;
+  let heightAnimation = null;
+  let contentAnimation = null;
+  const cancelAnimations = () => {
+    heightAnimation?.cancel();
+    contentAnimation?.cancel();
+    heightAnimation = contentAnimation = null;
+  };
+  const syncState = () => {
+    summary.setAttribute('aria-expanded', String(expanded));
+    content.inert = !expanded;
+  };
+  const settle = () => {
+    cancelAnimations();
+    disclosure.classList.remove('is-expanding');
+    disclosure.open = expanded;
+    syncState();
+    requestScrollUpdate();
+  };
+  const setExpanded = (open, animate = true) => {
+    if (open === expanded) return;
+    const fromHeight = disclosure.getBoundingClientRect().height;
+    const current = window.getComputedStyle(content);
+    const fromContent = disclosure.open ? { opacity: current.opacity, transform: current.transform } : { opacity: 0, transform: 'translateY(-6px)' };
+    expanded = open;
+    if (!open && content.contains(document.activeElement)) summary.focus({ preventScroll: true });
+    syncState();
+    if (!animate || motionPreference.matches || !disclosure.animate) {
+      settle();
+      return;
+    }
+    // Freeze the current visual size before cancelling an interrupted transition.
+    cancelAnimations();
+    disclosure.classList.remove('is-expanding');
+    disclosure.open = true;
+    const style = window.getComputedStyle(disclosure);
+    const borders = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    const toHeight = open ? disclosure.getBoundingClientRect().height : summary.getBoundingClientRect().height + borders;
+    disclosure.classList.add('is-expanding');
+    const options = { duration: open ? 320 : 220, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
+    const animation = disclosure.animate([{ height: `${fromHeight}px` }, { height: `${toHeight}px` }], options);
+    heightAnimation = animation;
+    contentAnimation = content.animate([fromContent, {
+      opacity: open ? 1 : 0, transform: open ? 'translateY(0)' : 'translateY(-4px)',
+    }], { ...options, duration: open ? 260 : 160 });
+    animation.onfinish = () => {
+      if (heightAnimation === animation) settle();
+    };
+    requestScrollUpdate();
+  };
+  summary.addEventListener('click', (event) => {
+    event.preventDefault();
+    setExpanded(!expanded);
+  });
+  // Also synchronize native changes from browser restoration or other scripts.
+  disclosure.addEventListener('toggle', () => {
+    if (!heightAnimation) {
+      expanded = disclosure.open;
+      syncState();
+    }
+    requestScrollUpdate();
+  });
+  motionPreference.addEventListener('change', settle);
+  window.addEventListener('resize', settle);
+  disclosureControllers.set(disclosure, setExpanded);
+  syncState();
+});
+
 // Keep inquiry links useful when the form is tucked into a disclosure.
 const inquiryPanel = document.querySelector('#inquiry');
+const expandInquiry = () => {
+  if (!inquiryPanel) return;
+  const expand = disclosureControllers.get(inquiryPanel);
+  if (expand) expand(true);
+  else inquiryPanel.open = true;
+};
 const openLinkedInquiry = () => {
-  if (window.location.hash === '#inquiry' && inquiryPanel) inquiryPanel.open = true;
+  if (window.location.hash === '#inquiry') expandInquiry();
 };
 document.querySelectorAll('a[href="#inquiry"]').forEach((link) => {
-  link.addEventListener('click', () => {
-    if (inquiryPanel) inquiryPanel.open = true;
-  });
+  link.addEventListener('click', expandInquiry);
 });
 window.addEventListener('hashchange', openLinkedInquiry);
-document.querySelectorAll('details').forEach((disclosure) => {
-  disclosure.addEventListener('toggle', requestScrollUpdate);
-});
 openLinkedInquiry();
 
 const inquiryForm = document.querySelector('#project-inquiry');

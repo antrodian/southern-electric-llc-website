@@ -72,15 +72,14 @@ summary::-webkit-details-marker { display: none; }
 summary h3, summary h4 { font: inherit; }
 .specialty-item summary { min-height: 60px; padding-block: 17px; font-size: 16px; font-weight: 500; line-height: 1.5; transition: color .2s; }
 summary:hover, summary[aria-expanded="true"] { color: var(--accent); }
-summary:active .disclosure-icon { transform: scale(.85); }
 details.is-expanding { overflow: hidden; overflow: clip; }
 .disclosure-content { display: flow-root; }
 .specialty-item.reveal > .disclosure-content { opacity: 1; transform: none; }
-.disclosure-icon { width: 16px; height: 16px; position: relative; flex: 0 0 auto; color: var(--muted); transition: color .22s, transform .22s var(--ease); }
-.disclosure-icon::before, .disclosure-icon::after { position: absolute; content: ""; background: currentColor; left: 0; top: 7px; width: 16px; height: 1px; transition: transform .25s var(--ease); }
+.disclosure-icon { width: 16px; height: 16px; position: relative; flex: 0 0 auto; color: var(--muted); transition: color .2s; }
+.disclosure-icon::before, .disclosure-icon::after { position: absolute; content: ""; background: currentColor; left: 0; top: 7px; width: 16px; height: 1px; transition: transform .24s cubic-bezier(.2, .7, .3, 1), opacity .18s; }
 .disclosure-icon::after { transform: rotate(90deg); }
 summary[aria-expanded="true"] .disclosure-icon, details[open] > summary:not([aria-expanded]) .disclosure-icon { color: var(--red); }
-summary[aria-expanded="true"] .disclosure-icon::after, details[open] > summary:not([aria-expanded]) .disclosure-icon::after { transform: rotate(0); }
+summary[aria-expanded="true"] .disclosure-icon::after, details[open] > summary:not([aria-expanded]) .disclosure-icon::after { transform: rotate(0); opacity: 0; }
 .specialty-item .disclosure-content > p { padding: 0 40px 22px 0; max-width: 64ch; color: var(--muted); font-size: 15px; line-height: 1.7; }
 .about { position: relative; isolation: isolate; }
 .about::before { position: absolute; z-index: -1; inset: 0; content: ""; background: var(--panel); }
